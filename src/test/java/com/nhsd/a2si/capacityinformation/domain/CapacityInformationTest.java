@@ -1,4 +1,4 @@
-package com.bjss.nhsd.a2si.capacityinformation.domain;
+package com.nhsd.a2si.capacityinformation.domain;
 
 import org.junit.Test;
 
@@ -25,13 +25,13 @@ public class CapacityInformationTest {
     }
 
     @Test
-    public void testConstructorWithOdsCodeAndNumberOfPatientsWaitingAndCurrentWaitingTimeAndLastUpdated() {
+    public void testConstructorWithOdsCodeAndLastUpdated() {
         String serviceId = "serviceId";
         String now = "2017-01-01 00:00:00";
 
         CapacityInformation capacityInformation = new CapacityInformation(serviceId, CapacityInformation.messageTemplate, now);
         assertNotNull(capacityInformation);
-        assertEquals(serviceId, capacityInformation.getServiceId());
+        assertEquals(serviceId, capacityInformation .getServiceId());
         assertEquals(CapacityInformation.messageTemplate, capacityInformation.getMessage());
         assertEquals(now, capacityInformation.getLastUpdated());
     }
@@ -57,6 +57,33 @@ public class CapacityInformationTest {
 
         assertEquals(CapacityInformation.messageTemplate, capacityInformation.getMessage());
     }
+
+
+    @Test
+    public void testWaitingTimeMins() {
+
+        CapacityInformation capacityInformation = new CapacityInformation();
+
+        int wtm = 45;
+
+        capacityInformation.setWaitingTimeMins(wtm);
+
+        assertEquals(45, capacityInformation.getWaitingTimeMins());
+    }
+
+
+    @Test
+    public void testPeopleWaitingToBeSeen() {
+
+        CapacityInformation capacityInformation = new CapacityInformation();
+
+        int peopleWaiting = 26;
+
+        capacityInformation.setNumberOfPeopleWaiting(peopleWaiting);
+
+        assertEquals(26, capacityInformation.getNumberOfPeopleWaiting());
+    }
+
 
     @Test
     public void testLastUpdated() {

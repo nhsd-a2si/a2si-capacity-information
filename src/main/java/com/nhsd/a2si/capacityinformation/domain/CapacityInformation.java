@@ -1,4 +1,4 @@
-package com.bjss.nhsd.a2si.capacityinformation.domain;
+package com.nhsd.a2si.capacityinformation.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,6 +11,8 @@ public class CapacityInformation implements Serializable {
     private String serviceId;
     private String message;
     private String lastUpdated;
+    private int waitingTimeMins;
+    private int numberOfPeopleWaiting;
 
     public CapacityInformation() {
     }
@@ -23,6 +25,21 @@ public class CapacityInformation implements Serializable {
     public CapacityInformation(String serviceId, String message, String lastUpdated) {
         this.serviceId = serviceId;
         this.message = message;
+        this.lastUpdated = lastUpdated;
+    }
+
+    public CapacityInformation(String serviceId, String message, int waitingTimeMins, int numberOfPeopleWaiting) {
+        this.serviceId = serviceId;
+        this.message = message;
+        this.waitingTimeMins = waitingTimeMins;
+        this.numberOfPeopleWaiting = numberOfPeopleWaiting;
+    }
+
+    public CapacityInformation(String serviceId, String message, int waitingTimeMins, int numberOfPeopleWaiting, String lastUpdated) {
+        this.serviceId = serviceId;
+        this.message = message;
+        this.waitingTimeMins = waitingTimeMins;
+        this.numberOfPeopleWaiting = numberOfPeopleWaiting;
         this.lastUpdated = lastUpdated;
     }
 
@@ -43,6 +60,22 @@ public class CapacityInformation implements Serializable {
         this.message = message;
     }
 
+    public int getWaitingTimeMins() {
+        return waitingTimeMins;
+    }
+
+    public void setWaitingTimeMins(int waitingTimeMins) {
+        this.waitingTimeMins = waitingTimeMins;
+    }
+
+    public int getNumberOfPeopleWaiting() {
+        return numberOfPeopleWaiting;
+    }
+
+    public void setNumberOfPeopleWaiting(int peopleWaiting) {
+        this.numberOfPeopleWaiting = peopleWaiting;
+    }
+
     public String getLastUpdated() {
         return lastUpdated;
     }
@@ -57,6 +90,8 @@ public class CapacityInformation implements Serializable {
         if (!(o instanceof CapacityInformation)) return false;
         CapacityInformation that = (CapacityInformation) o;
         return Objects.equals(getServiceId(), that.getServiceId()) &&
+                Objects.equals(getWaitingTimeMins(), that.getWaitingTimeMins()) &&
+                Objects.equals(getNumberOfPeopleWaiting(), that.getNumberOfPeopleWaiting()) &&
                 Objects.equals(getMessage(), that.getMessage()) &&
                 Objects.equals(getLastUpdated(), that.getLastUpdated());
     }
@@ -64,13 +99,15 @@ public class CapacityInformation implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getServiceId(), getMessage(), getLastUpdated());
+        return Objects.hash(getServiceId(), getMessage(), getWaitingTimeMins(), getNumberOfPeopleWaiting(), getLastUpdated());
     }
 
     @Override
     public String toString() {
         return "CapacityInformation{" +
                 "serviceId='" + serviceId + '\'' +
+                ", waitingTimeMins='" + waitingTimeMins + '\'' +
+                ", numberOfPeopleWaiting='" + numberOfPeopleWaiting + '\'' +
                 ", message='" + message + '\'' +
                 ", lastUpdated='" + lastUpdated + '\'' +
                 '}';
