@@ -12,19 +12,19 @@ First, download the code from GitHub. This can be done using the desktop git too
 
 Next, install the dev tools and dependencies....
 
-##Installation of Development Tools and Dependencies
+## Installation of Development Tools and Dependencies
 Install Git for Windows:
 Install official git release: https://git-scm.com/download/win
 
 Or install GitHub Desktop which also includes a GUI interface for git management: https://desktop.github.com/
 
-###Install Java Development Kit 8:
+### Install Java Development Kit 8:
 http://www.oracle.com/technetwork/java/javase/downloads/
 
-###Install Maven 3:
+### Install Maven 3:
 https://maven.apache.org/download.cgi
 
-###Environment Variables
+### Environment Variables
 Ensure that the system environment variables for Java and Maven are set correctly, as described below...
 
 M2_HOME should point to the install directory of your local Maven install folder, e.g.
@@ -41,7 +41,7 @@ PATH should contain the bin directory of both M2_HOME and JAVA_HOME, e.g.
 ```
 
 
-##Build The Project
+## Build The Project
 
 cd {projectRoot}
 mvn clean install
