@@ -5,8 +5,12 @@ import java.util.Objects;
 
 public class CapacityInformation implements Serializable {
 
-    public static final String messageTemplate = "The estimated wait time is xxx hours but it could be " +
-            "longer or shorter depending on the time arriving to the service";
+    public static final String messageTemplate = 
+    		"The estimated wait time is xxx but it could be " +
+        "longer or shorter depending on the time arriving at the service";
+    public static final String messageTemplateNoWait = 
+    		"There is currently no waiting time but this could change " + 
+    		"depending the time arriving at the service";
 
     private String serviceId;
     private String message;
