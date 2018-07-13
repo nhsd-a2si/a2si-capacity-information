@@ -98,9 +98,9 @@ public class CapacityInformation implements Serializable {
     }
     
     private String getMessageFromWaitingTime() {
-    		String sMessage = "";
+    	String sMessage = "";
         if (this.waitingTimeMins != null) {
-        		if (this.waitingTimeMins > 0) {
+        	if (this.waitingTimeMins > 0) {
 	            int iWaitingTimeHours = this.waitingTimeMins / 60;
 	            int iWaitingTimeMinutes = this.waitingTimeMins % 60;
 	            
@@ -110,10 +110,10 @@ public class CapacityInformation implements Serializable {
 	            }
 	
 	            sMessage = CapacityInformation.messageTemplate.replace("xxx", formattedWaitingTime);
-	        } else {
-	        		sMessage = CapacityInformation.messageTemplateNoWait;
+	        } else if (this.waitingTimeMins == 0) {
+	        	sMessage = CapacityInformation.messageTemplateNoWait;
 	        }
-    		}
+    	}
         return sMessage;
     }
 
