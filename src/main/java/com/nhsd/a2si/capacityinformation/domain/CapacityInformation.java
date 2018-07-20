@@ -3,6 +3,8 @@ package com.nhsd.a2si.capacityinformation.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class CapacityInformation implements Serializable {
 
     public static final String messageTemplate = 
@@ -13,9 +15,10 @@ public class CapacityInformation implements Serializable {
     		"depending the time arriving at the service";
 
     private String serviceId;
+    @JsonIgnore
     private String message;
     private String lastUpdated;
-    private int waitingTimeMins;
+    private Integer waitingTimeMins;
     private int numberOfPeopleWaiting;
 
     public CapacityInformation() {
@@ -29,6 +32,12 @@ public class CapacityInformation implements Serializable {
     public CapacityInformation(String serviceId, String message, String lastUpdated) {
         this.serviceId = serviceId;
         this.message = message;
+        this.lastUpdated = lastUpdated;
+    }
+    
+    public CapacityInformation(String serviceId, int waitingTimeMins, String lastUpdated) {
+        this.serviceId = serviceId;
+        this.waitingTimeMins = waitingTimeMins;
         this.lastUpdated = lastUpdated;
     }
 
@@ -57,18 +66,18 @@ public class CapacityInformation implements Serializable {
     }
 
     public String getMessage() {
-        return message;
+        return getMessageFromWaitingTime();
     }
 
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public int getWaitingTimeMins() {
+    public Integer getWaitingTimeMins() {
         return waitingTimeMins;
     }
 
-    public void setWaitingTimeMins(int waitingTimeMins) {
+    public void setWaitingTimeMins(Integer waitingTimeMins) {
         this.waitingTimeMins = waitingTimeMins;
     }
 
@@ -86,6 +95,26 @@ public class CapacityInformation implements Serializable {
 
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+    
+    private String getMessageFromWaitingTime() {
+    	String sMessage = "";
+        if (this.waitingTimeMins != null) {
+        	if (this.waitingTimeMins > 0) {
+	            int iWaitingTimeHours = this.waitingTimeMins / 60;
+	            int iWaitingTimeMinutes = this.waitingTimeMins % 60;
+	            
+	            String formattedWaitingTime = iWaitingTimeMinutes + " min";
+	            if (iWaitingTimeHours > 0) {
+	            		formattedWaitingTime = iWaitingTimeHours + " hr " + formattedWaitingTime;
+	            }
+	
+	            sMessage = CapacityInformation.messageTemplate.replace("xxx", formattedWaitingTime);
+	        } else if (this.waitingTimeMins == 0) {
+	        	sMessage = CapacityInformation.messageTemplateNoWait;
+	        }
+    	}
+        return sMessage;
     }
 
     @Override
