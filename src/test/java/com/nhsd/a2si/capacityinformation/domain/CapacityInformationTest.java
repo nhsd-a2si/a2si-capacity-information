@@ -82,7 +82,7 @@ public class CapacityInformationTest {
 
         capacityInformation.setNumberOfPeopleWaiting(peopleWaiting);
 
-        assertEquals(26, capacityInformation.getNumberOfPeopleWaiting());
+        assertEquals(26, capacityInformation.getNumberOfPeopleWaiting().intValue());
     }
 
 
