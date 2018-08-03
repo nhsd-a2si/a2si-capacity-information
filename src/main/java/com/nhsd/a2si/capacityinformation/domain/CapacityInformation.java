@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.nhsd.a2si.capacityinformation.BlankOrPositive;
+import com.nhsd.a2si.capacityinformation.BlandOrWithinTheLast30Minutes;
+
+import javax.validation.constraints.*;
 
 public class CapacityInformation implements Serializable {
 
@@ -14,11 +18,24 @@ public class CapacityInformation implements Serializable {
     		"There is currently no waiting time but this could change " + 
     		"depending the time arriving at the service";
 
+    public static final String STRING_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    @NotEmpty(message = "Service identifier is mandatory")
     private String serviceId;
+
     @JsonIgnore
+    @NotEmpty(message = "The message field is mandatory")
     private String message;
+
+    @BlandOrWithinTheLast30Minutes
     private String lastUpdated;
+
+    @NotNull(message = "Wait time in minutes is mandatory")
+    @Positive(message = "Wait time in minutes must be a positive number")
+    @Max(message = "Wait time has an upper limit of 24 hours", value = 1440)
     private Integer waitingTimeMins;
+
+    @BlankOrPositive(message = "The value can be blank or positive")
     private int numberOfPeopleWaiting;
 
     public CapacityInformation() {

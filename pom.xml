@@ -33,6 +33,20 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Testing the bean validation (JSR-303) -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.10.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.0</version>
+            <scope>test</scope>
         </dependency>
         
 <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
@@ -42,6 +56,12 @@
 		    <artifactId>jackson-annotations</artifactId>
 		    <version>2.9.6</version>
 		</dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.10.Final</version>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
 </project>
