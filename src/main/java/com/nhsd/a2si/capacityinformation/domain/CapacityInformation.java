@@ -35,7 +35,8 @@ public class CapacityInformation implements Serializable {
     private Integer waitingTimeMins;
 
     @BlankOrPositive(message = "The value can be blank or positive")
-    private int numberOfPeopleWaiting;
+    private Integer numberOfPeopleWaiting;
+
 
     public CapacityInformation() {
     }
@@ -97,11 +98,11 @@ public class CapacityInformation implements Serializable {
         this.waitingTimeMins = waitingTimeMins;
     }
 
-    public int getNumberOfPeopleWaiting() {
+    public Integer getNumberOfPeopleWaiting() {
         return numberOfPeopleWaiting;
     }
 
-    public void setNumberOfPeopleWaiting(int peopleWaiting) {
+    public void setNumberOfPeopleWaiting(Integer peopleWaiting) {
         this.numberOfPeopleWaiting = peopleWaiting;
     }
 
