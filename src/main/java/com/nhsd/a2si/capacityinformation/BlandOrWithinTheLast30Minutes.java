@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({METHOD, FIELD})
 @Retention(RUNTIME)
 public @interface BlandOrWithinTheLast30Minutes {
-    String message() default "Last updated must be within the last 30 minutes and formatted as YYYY-MM-DD HH:MM:SS or null. The value given was {value}.";
+    String message() default "Last updated must be within the last 30 minutes and formatted as yyyy-MM-dd HH:mm:ss or null.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

@@ -17,6 +17,9 @@ import java.util.Set;
 
 import static com.nhsd.a2si.capacityinformation.domain.CapacityInformation.STRING_DATE_FORMAT;
 import static junit.framework.TestCase.*;
+import static org.hamcrest.CoreMatchers.endsWith;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CapacityInformationTest {
 
@@ -122,8 +125,7 @@ public class CapacityInformationTest {
     public void valiateThat_serviceIdentifierIsMandatory_EmptyString() {
         Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "serviceId", "");
         assertEquals(1, violations.size());
-        assertEquals("Service identifier is mandatory", violations.iterator().next().getMessage());
-
+        assertThat(violations.iterator().next().getMessage(), endsWith("is mandatory"));
     }
 
     @Test
@@ -136,21 +138,21 @@ public class CapacityInformationTest {
     public void valiateThat_waitingTimeMins_null() {
         Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", null);
         assertEquals(1, violations.size());
-        assertEquals("Wait time in minutes is mandatory", violations.iterator().next().getMessage());
+        assertThat(violations.iterator().next().getMessage(), endsWith("is mandatory"));
     }
 
     @Test
     public void valiateThat_waitingTimeMins_NegativeNumber() {
         Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", -1);
         assertEquals(1, violations.size());
-        assertEquals("Wait time in minutes must be a positive number", violations.iterator().next().getMessage());
+        assertThat(violations.iterator().next().getMessage(), endsWith("must be a positive number"));
     }
 
     @Test
     public void valiateThat_waitingTimeMins_NegativeNumber_Zero() {
         Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", 0);
         assertEquals(1, violations.size());
-        assertEquals("Wait time in minutes must be a positive number", violations.iterator().next().getMessage());
+        assertThat(violations.iterator().next().getMessage(), endsWith("must be a positive number"));
     }
 
     @Test
@@ -165,7 +167,7 @@ public class CapacityInformationTest {
     public void valiateThat_waitingTimeMins_mustBeLessThan24Hours_over() {
         Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", 1441);
         assertEquals(1, violations.size());
-        assertEquals("Wait time has an upper limit of 24 hours", violations.iterator().next().getMessage());
+        assertThat(violations.iterator().next().getMessage(), endsWith("24 hours"));
     }
 
     @Test

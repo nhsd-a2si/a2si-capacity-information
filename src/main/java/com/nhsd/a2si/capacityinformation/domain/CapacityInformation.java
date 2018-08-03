@@ -23,16 +23,15 @@ public class CapacityInformation implements Serializable {
     @NotEmpty(message = "Service identifier is mandatory")
     private String serviceId;
 
-    @JsonIgnore
     @NotEmpty(message = "The message field is mandatory")
     private String message;
 
     @BlandOrWithinTheLast30Minutes
     private String lastUpdated;
 
-    @NotNull(message = "Wait time in minutes is mandatory")
-    @Positive(message = "Wait time in minutes must be a positive number")
-    @Max(message = "Wait time has an upper limit of 24 hours", value = 1440)
+    @NotNull(message = "'waitingTimeMins' in minutes is mandatory")
+    @Positive(message = "'waitingTimeMins' must be a positive number")
+    @Max(message = "'waitingTimeMins' has an upper limit of 24 hours", value = 1440)
     private Integer waitingTimeMins;
 
     @BlankOrPositive(message = "The value can be blank or positive")
