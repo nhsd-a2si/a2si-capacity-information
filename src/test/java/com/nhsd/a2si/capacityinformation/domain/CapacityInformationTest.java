@@ -45,7 +45,7 @@ public class CapacityInformationTest {
     @Test
     public void testConstructorWithServiceIdAndMessage() {
         String serviceId = "serviceId";
-        CapacityInformation capacityInformation = new CapacityInformation(serviceId, CapacityInformation.messageTemplate);
+        CapacityInformation capacityInformation = new CapacityInformation(serviceId);
         assertNotNull(capacityInformation);
         assertEquals(serviceId, capacityInformation.getServiceId());
     }
@@ -55,7 +55,7 @@ public class CapacityInformationTest {
         String serviceId = "serviceId";
         String now = "2017-01-01 00:00:00";
 
-        CapacityInformation capacityInformation = new CapacityInformation(serviceId, CapacityInformation.messageTemplate, now);
+        CapacityInformation capacityInformation = new CapacityInformation(serviceId, now);
         assertNotNull(capacityInformation);
         assertEquals(serviceId, capacityInformation .getServiceId());
         assertEquals(now, capacityInformation.getLastUpdated());
@@ -137,22 +137,20 @@ public class CapacityInformationTest {
     @Test
     public void valiateThat_waitingTimeMins_null() {
         Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", null);
-        assertEquals(1, violations.size());
-        assertThat(violations.iterator().next().getMessage(), endsWith("is mandatory"));
+        assertEquals(0, violations.size());
     }
 
     @Test
     public void valiateThat_waitingTimeMins_NegativeNumber() {
         Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", -1);
         assertEquals(1, violations.size());
-        assertThat(violations.iterator().next().getMessage(), endsWith("must be a positive number"));
+        assertThat(violations.iterator().next().getMessage(), endsWith("The value can be blank or positive"));
     }
 
     @Test
     public void valiateThat_waitingTimeMins_NegativeNumber_Zero() {
         Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", 0);
-        assertEquals(1, violations.size());
-        assertThat(violations.iterator().next().getMessage(), endsWith("must be a positive number"));
+        assertEquals(0, violations.size());
     }
 
     @Test
