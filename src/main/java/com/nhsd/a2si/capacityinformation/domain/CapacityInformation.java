@@ -23,14 +23,12 @@ public class CapacityInformation implements Serializable {
     @NotEmpty(message = "Service identifier is mandatory")
     private String serviceId;
 
-    @NotEmpty(message = "The message field is mandatory")
-    private String message;
-
     @BlandOrWithinTheLast30Minutes
     private String lastUpdated;
 
-    @NotNull(message = "'waitingTimeMins' in minutes is mandatory")
-    @Positive(message = "'waitingTimeMins' must be a positive number")
+    //@NotNull(message = "'waitingTimeMins' in minutes is mandatory")
+    //@Positive(message = "'waitingTimeMins' must be a positive number")
+    @BlankOrPositive(message = "The value can be blank or positive")
     @Max(message = "'waitingTimeMins' has an upper limit of 24 hours", value = 1440)
     private Integer waitingTimeMins;
 
@@ -41,14 +39,12 @@ public class CapacityInformation implements Serializable {
     public CapacityInformation() {
     }
 
-    public CapacityInformation(String serviceId, String message) {
+    public CapacityInformation(String serviceId) {
         this.serviceId = serviceId;
-        this.message = message;
     }
 
-    public CapacityInformation(String serviceId, String message, String lastUpdated) {
+    public CapacityInformation(String serviceId, String lastUpdated) {
         this.serviceId = serviceId;
-        this.message = message;
         this.lastUpdated = lastUpdated;
     }
     
@@ -58,16 +54,14 @@ public class CapacityInformation implements Serializable {
         this.lastUpdated = lastUpdated;
     }
 
-    public CapacityInformation(String serviceId, String message, int waitingTimeMins, int numberOfPeopleWaiting) {
+    public CapacityInformation(String serviceId, int waitingTimeMins, int numberOfPeopleWaiting) {
         this.serviceId = serviceId;
-        this.message = message;
         this.waitingTimeMins = waitingTimeMins;
         this.numberOfPeopleWaiting = numberOfPeopleWaiting;
     }
 
-    public CapacityInformation(String serviceId, String message, int waitingTimeMins, int numberOfPeopleWaiting, String lastUpdated) {
+    public CapacityInformation(String serviceId, int waitingTimeMins, int numberOfPeopleWaiting, String lastUpdated) {
         this.serviceId = serviceId;
-        this.message = message;
         this.waitingTimeMins = waitingTimeMins;
         this.numberOfPeopleWaiting = numberOfPeopleWaiting;
         this.lastUpdated = lastUpdated;
@@ -84,10 +78,6 @@ public class CapacityInformation implements Serializable {
 
     public String getMessage() {
         return getMessageFromWaitingTime();
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public Integer getWaitingTimeMins() {
@@ -158,7 +148,6 @@ public class CapacityInformation implements Serializable {
                 "serviceId='" + serviceId + '\'' +
                 ", waitingTimeMins='" + waitingTimeMins + '\'' +
                 ", numberOfPeopleWaiting='" + numberOfPeopleWaiting + '\'' +
-                ", message='" + message + '\'' +
                 ", lastUpdated='" + lastUpdated + '\'' +
                 '}';
     }
