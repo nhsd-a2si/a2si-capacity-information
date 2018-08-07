@@ -25,9 +25,7 @@ public class CapacityInformation implements Serializable {
 
     @BlandOrWithinTheLast30Minutes
     private String lastUpdated;
-
-    //@NotNull(message = "'waitingTimeMins' in minutes is mandatory")
-    //@Positive(message = "'waitingTimeMins' must be a positive number")
+    
     @BlankOrPositive(message = "The value can be blank or positive")
     @Max(message = "'waitingTimeMins' has an upper limit of 24 hours", value = 1440)
     private Integer waitingTimeMins;
