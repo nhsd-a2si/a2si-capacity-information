@@ -2,10 +2,8 @@ package com.nhsd.a2si.capacityinformation.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nhsd.a2si.capacityinformation.BlankOrPositive;
-import com.nhsd.a2si.capacityinformation.BlandOrWithinTheLast30Minutes;
+import com.nhsd.a2si.capacityinformation.BlankOrWithinTheLast30Minutes;
 
 import javax.validation.constraints.*;
 
@@ -23,7 +21,7 @@ public class CapacityInformation implements Serializable {
     @NotEmpty(message = "Service identifier is mandatory")
     private String serviceId;
 
-    @BlandOrWithinTheLast30Minutes
+    @BlankOrWithinTheLast30Minutes
     private String lastUpdated;
     
     @BlankOrPositive(message = "The value can be blank or positive")
