@@ -2,8 +2,10 @@ package com.nhsd.a2si.capacityinformation.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
+import com.nhsd.a2si.capacityinformation.BlankOrPositive;
+import com.nhsd.a2si.capacityinformation.BlankOrWithinTheLast30Minutes;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.validation.constraints.*;
 
 public class CapacityInformation implements Serializable {
 
@@ -14,24 +16,31 @@ public class CapacityInformation implements Serializable {
     		"There is currently no waiting time but this could change " + 
     		"depending the time arriving at the service";
 
+    public static final String STRING_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    @NotEmpty(message = "Service identifier is mandatory")
     private String serviceId;
-    @JsonIgnore
-    private String message;
+
+    @BlankOrWithinTheLast30Minutes
     private String lastUpdated;
+    
+    @BlankOrPositive(message = "The value can be blank or positive")
+    @Max(message = "'waitingTimeMins' has an upper limit of 24 hours", value = 1440)
     private Integer waitingTimeMins;
+
+    @BlankOrPositive(message = "The value can be blank or positive")
     private Integer numberOfPeopleWaiting;
+
 
     public CapacityInformation() {
     }
 
-    public CapacityInformation(String serviceId, String message) {
+    public CapacityInformation(String serviceId) {
         this.serviceId = serviceId;
-        this.message = message;
     }
 
-    public CapacityInformation(String serviceId, String message, String lastUpdated) {
+    public CapacityInformation(String serviceId, String lastUpdated) {
         this.serviceId = serviceId;
-        this.message = message;
         this.lastUpdated = lastUpdated;
     }
     
@@ -41,16 +50,14 @@ public class CapacityInformation implements Serializable {
         this.lastUpdated = lastUpdated;
     }
 
-    public CapacityInformation(String serviceId, String message, int waitingTimeMins, int numberOfPeopleWaiting) {
+    public CapacityInformation(String serviceId, int waitingTimeMins, int numberOfPeopleWaiting) {
         this.serviceId = serviceId;
-        this.message = message;
         this.waitingTimeMins = waitingTimeMins;
         this.numberOfPeopleWaiting = numberOfPeopleWaiting;
     }
 
-    public CapacityInformation(String serviceId, String message, int waitingTimeMins, int numberOfPeopleWaiting, String lastUpdated) {
+    public CapacityInformation(String serviceId, int waitingTimeMins, int numberOfPeopleWaiting, String lastUpdated) {
         this.serviceId = serviceId;
-        this.message = message;
         this.waitingTimeMins = waitingTimeMins;
         this.numberOfPeopleWaiting = numberOfPeopleWaiting;
         this.lastUpdated = lastUpdated;
@@ -67,10 +74,6 @@ public class CapacityInformation implements Serializable {
 
     public String getMessage() {
         return getMessageFromWaitingTime();
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public Integer getWaitingTimeMins() {
@@ -141,7 +144,6 @@ public class CapacityInformation implements Serializable {
                 "serviceId='" + serviceId + '\'' +
                 ", waitingTimeMins='" + waitingTimeMins + '\'' +
                 ", numberOfPeopleWaiting='" + numberOfPeopleWaiting + '\'' +
-                ", message='" + message + '\'' +
                 ", lastUpdated='" + lastUpdated + '\'' +
                 '}';
     }
