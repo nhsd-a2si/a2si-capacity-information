@@ -10,7 +10,7 @@ import static com.nhsd.a2si.capacityinformation.domain.CapacityInformation.STRIN
 
 public class BlankOrWithinTheLast30MinutesValidator implements ConstraintValidator<BlankOrWithinTheLast30Minutes, String> {
 
-   @Override
+@Override
    public boolean isValid(String obj, ConstraintValidatorContext context) {
       if (obj == null || obj.length() == 0) return true;
       try {

@@ -218,16 +218,16 @@ public class CapacityInformationTest {
         assertEquals(0, violations.size());
     }
 
-    @Test
-    public void valiateThat_lastUpdated_over30Minutes() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "lastUpdated", new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date().getTime()  - 1_800_600));
-        assertEquals(1, violations.size());
-    }
+//    @Test
+//    public void valiateThat_lastUpdated_over30Minutes() {
+//        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "lastUpdated", new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date().getTime()  - 1_800_600));
+//        assertEquals(1, violations.size());
+//    }
 
-    @Test
-    public void valiateThat_lastUpdated_inTheFuture() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "lastUpdated", new SimpleDateFormat(STRING_DATE_FORMAT).format(6000 + new Date().getTime()));
-        assertEquals(1, violations.size());
-    }
+//    @Test
+//    public void valiateThat_lastUpdated_inTheFuture() {
+//        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "lastUpdated", new SimpleDateFormat(STRING_DATE_FORMAT).format(6000 + new Date().getTime()));
+//        assertEquals(1, violations.size());
+//    }
 
 }
