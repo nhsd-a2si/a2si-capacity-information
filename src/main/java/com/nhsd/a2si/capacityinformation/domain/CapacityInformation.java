@@ -2,11 +2,15 @@ package com.nhsd.a2si.capacityinformation.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nhsd.a2si.capacityinformation.BlankOrPositive;
 import com.nhsd.a2si.capacityinformation.BlankOrWithinTheLast30Minutes;
+import com.nhsd.a2si.capacityinformation.CapacityInformationValid;
 
 import javax.validation.constraints.*;
 
+@CapacityInformationValid
 public class CapacityInformation implements Serializable {
 
     public static final String messageTemplate = 
@@ -21,7 +25,7 @@ public class CapacityInformation implements Serializable {
     @NotEmpty(message = "Service identifier is mandatory")
     private String serviceId;
 
-    @BlankOrWithinTheLast30Minutes
+    //@BlankOrWithinTheLast30Minutes()
     private String lastUpdated;
     
     @BlankOrPositive(message = "The value can be blank or positive")
@@ -120,6 +124,10 @@ public class CapacityInformation implements Serializable {
         return sMessage;
     }
 
+    public int getTimeToLiveSecs() {
+    	return 1800;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
