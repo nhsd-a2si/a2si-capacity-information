@@ -9,10 +9,10 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Constraint(validatedBy = BlankOrWithinTheLast30MinutesValidator.class)
+@Constraint(validatedBy = WithinTheLast30MinutesValidator.class)
 @Target({METHOD, FIELD})
 @Retention(RUNTIME)
-public @interface BlankOrWithinTheLast30Minutes {
+public @interface WithinTheLast30Minutes {
     String message() default "Last updated must be within the last 30 minutes and formatted as yyyy-MM-dd HH:mm:ss or null.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

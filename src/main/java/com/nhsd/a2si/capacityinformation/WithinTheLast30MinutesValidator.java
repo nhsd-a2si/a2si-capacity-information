@@ -8,11 +8,11 @@ import java.util.Date;
 
 import static com.nhsd.a2si.capacityinformation.domain.CapacityInformation.STRING_DATE_FORMAT;
 
-public class BlankOrWithinTheLast30MinutesValidator implements ConstraintValidator<BlankOrWithinTheLast30Minutes, String> {
+public class WithinTheLast30MinutesValidator implements ConstraintValidator<WithinTheLast30Minutes, String> {
 
 @Override
    public boolean isValid(String obj, ConstraintValidatorContext context) {
-      if (obj == null || obj.length() == 0) return true;
+      if (obj == null || obj.length() == 0) return false;
       try {
          Date lastUpdated = new SimpleDateFormat(STRING_DATE_FORMAT).parse(obj);
          if (lastUpdated.getTime() <= new Date().getTime()) {

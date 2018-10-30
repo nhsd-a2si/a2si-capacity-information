@@ -18,33 +18,33 @@ import static org.junit.Assert.*;
 public class BlankOrWithinTheLast30MinutesValidatorTest {
 
     @Test
-    public void isValid_null_true() {
-        assertTrue(new BlankOrWithinTheLast30MinutesValidator().isValid(null, null));
+    public void isValid_null_false() {
+        assertFalse(new WithinTheLast30MinutesValidator().isValid(null, null));
     }
 
     /* +0 minutes */
     @Test
     public void isValid_now_true() {
-        assertTrue(new BlankOrWithinTheLast30MinutesValidator().isValid(new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date()), null));
+        assertTrue(new WithinTheLast30MinutesValidator().isValid(new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date()), null));
     }
 
 
     /* +0.10 minutes */
     @Test
     public void isValid_10SecondsLater_false() {
-        assertFalse(new BlankOrWithinTheLast30MinutesValidator().isValid(new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date(6000 + new Date().getTime())), null));
+        assertFalse(new WithinTheLast30MinutesValidator().isValid(new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date(6000 + new Date().getTime())), null));
     }
 
     /* -30.01 minutes */
     @Test
     public void isValid_JustOver30MinuteBefore_false() {
-        assertFalse(new BlankOrWithinTheLast30MinutesValidator().isValid(new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date(new Date().getTime() - 1_800_600)), null));
+        assertFalse(new WithinTheLast30MinutesValidator().isValid(new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date(new Date().getTime() - 1_800_600)), null));
     }
 
     /* -29.97 minutes */
     @Test
     public void isValid_JustUnderMinuteBefore_true() {
-        assertTrue(new BlankOrWithinTheLast30MinutesValidator().isValid(new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date(new Date().getTime() - 1_798_200)), null));
+        assertTrue(new WithinTheLast30MinutesValidator().isValid(new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date(new Date().getTime() - 1_798_200)), null));
     }
 
 }

@@ -5,8 +5,8 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nhsd.a2si.capacityinformation.BlankOrPositive;
-import com.nhsd.a2si.capacityinformation.BlankOrWithinTheLast30Minutes;
 import com.nhsd.a2si.capacityinformation.CapacityInformationValid;
+import com.nhsd.a2si.capacityinformation.WithinTheLast30Minutes;
 
 import javax.validation.constraints.*;
 
@@ -25,9 +25,12 @@ public class CapacityInformation implements Serializable {
     @NotEmpty(message = "Service identifier is mandatory")
     private String serviceId;
 
-    //@BlankOrWithinTheLast30Minutes()
+    @NotEmpty(message = "Service's name is mandatory")
+    private String serviceName;
+
+    @WithinTheLast30Minutes()
     private String lastUpdated;
-    
+
     @BlankOrPositive(message = "The value can be blank or positive")
     @Max(message = "'waitingTimeMins' has an upper limit of 24 hours", value = 1440)
     private Integer waitingTimeMins;
@@ -103,7 +106,15 @@ public class CapacityInformation implements Serializable {
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
-    
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     private String getMessageFromWaitingTime() {
     	String sMessage = "";
         if (this.waitingTimeMins != null) {
@@ -134,6 +145,7 @@ public class CapacityInformation implements Serializable {
         if (!(o instanceof CapacityInformation)) return false;
         CapacityInformation that = (CapacityInformation) o;
         return Objects.equals(getServiceId(), that.getServiceId()) &&
+                Objects.equals(getServiceName(), that.getServiceName()) &&
                 Objects.equals(getWaitingTimeMins(), that.getWaitingTimeMins()) &&
                 Objects.equals(getNumberOfPeopleWaiting(), that.getNumberOfPeopleWaiting()) &&
                 Objects.equals(getMessage(), that.getMessage()) &&
@@ -142,14 +154,14 @@ public class CapacityInformation implements Serializable {
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(getServiceId(), getMessage(), getWaitingTimeMins(), getNumberOfPeopleWaiting(), getLastUpdated());
+        return Objects.hash(getServiceId(), getServiceName(), getMessage(), getWaitingTimeMins(), getNumberOfPeopleWaiting(), getLastUpdated());
     }
 
     @Override
     public String toString() {
         return "CapacityInformation{" +
                 "serviceId='" + serviceId + '\'' +
+                "serviceName='" + serviceName + '\'' +
                 ", waitingTimeMins='" + waitingTimeMins + '\'' +
                 ", numberOfPeopleWaiting='" + numberOfPeopleWaiting + '\'' +
                 ", lastUpdated='" + lastUpdated + '\'' +
