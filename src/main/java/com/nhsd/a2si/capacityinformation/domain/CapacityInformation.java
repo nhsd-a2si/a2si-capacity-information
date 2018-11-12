@@ -134,8 +134,12 @@ public class CapacityInformation implements Serializable {
     	}
         return sMessage;
     }
-
+/*
     public int getTimeToLiveSecs() {
+    	return 604800;
+    }
+*/    
+    public int getDurationWaitTimeValidSecs() {
     	return 1800;
     }
     

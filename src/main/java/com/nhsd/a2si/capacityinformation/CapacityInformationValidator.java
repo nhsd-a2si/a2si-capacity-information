@@ -24,7 +24,7 @@ public class CapacityInformationValidator implements ConstraintValidator<Capacit
                            ConstraintValidatorContext constraintValidatorContext) {
     	
     	// Validate that the lastUpdated is supplied and that it is within timeToLiveSecs
-    	int timeToLiveSecs = ci.getTimeToLiveSecs();
+    	int timeToLiveSecs = ci.getDurationWaitTimeValidSecs();
     	if (ci.getLastUpdated() != null && ci.getLastUpdated().trim().length() > 0) {
 
     		try {
