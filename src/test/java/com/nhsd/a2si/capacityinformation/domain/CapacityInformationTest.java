@@ -1,9 +1,6 @@
 package com.nhsd.a2si.capacityinformation.domain;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -199,6 +196,7 @@ public class CapacityInformationTest {
         assertEquals("The value can be blank or positive", violations.iterator().next().getMessage());
     }
 
+    @Ignore
     @Test
     public void valiateThat_lastUpdated_lastUpdated_null() {
         Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "lastUpdated", null);
