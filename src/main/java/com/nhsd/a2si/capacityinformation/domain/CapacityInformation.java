@@ -3,17 +3,14 @@ package com.nhsd.a2si.capacityinformation.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nhsd.a2si.capacityinformation.BlankOrPositive;
 import com.nhsd.a2si.capacityinformation.CapacityInformationValid;
-import com.nhsd.a2si.capacityinformation.WithinTheLast30Minutes;
-
-import javax.validation.constraints.*;
 
 @CapacityInformationValid
 public class CapacityInformation implements Serializable {
 
-    public static final String messageTemplate = 
+	private static final long serialVersionUID = 741723721807676390L;
+	
+	public static final String messageTemplate = 
     		"The estimated wait time is xxx but it could be " +
         "longer or shorter depending on the time arriving at the service";
     public static final String messageTemplateNoWait = 
@@ -22,20 +19,17 @@ public class CapacityInformation implements Serializable {
 
     public static final String STRING_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    @NotEmpty(message = "Service identifier is mandatory")
     private String serviceId;
 
-    @NotEmpty(message = "Service's name is mandatory")
     private String serviceName;
 
-    @WithinTheLast30Minutes()
+    // Note: This field is validated in the CapacityInformationValidator class because we needed to
+    // obtain the wait time validity period from an environment variable which is retrieved from an
+    // implementation class extending this one in the capacity service project.
     private String lastUpdated;
 
-    @BlankOrPositive(message = "The value can be blank or positive")
-    @Max(message = "'waitingTimeMins' has an upper limit of 24 hours", value = 1440)
     private Integer waitingTimeMins;
 
-    @BlankOrPositive(message = "The value can be blank or positive")
     private Integer numberOfPeopleWaiting;
 
 
@@ -134,11 +128,7 @@ public class CapacityInformation implements Serializable {
     	}
         return sMessage;
     }
-/*
-    public int getTimeToLiveSecs() {
-    	return 604800;
-    }
-*/    
+   
     public int getDurationWaitTimeValidSecs() {
     	return 1800;
     }

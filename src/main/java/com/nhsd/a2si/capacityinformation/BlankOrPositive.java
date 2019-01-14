@@ -1,7 +1,6 @@
 package com.nhsd.a2si.capacityinformation;
 
 import javax.validation.Constraint;
-import javax.validation.ConstraintTarget;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
