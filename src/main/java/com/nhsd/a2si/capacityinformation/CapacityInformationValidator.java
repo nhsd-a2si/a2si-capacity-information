@@ -122,7 +122,7 @@ public class CapacityInformationValidator implements ConstraintValidator<Capacit
     	this.addValidationError(constraintValidatorContext,
 				ci.getServiceId(),
 				"VAL-0003",
-				"Last updated must be within the last " + timeToLiveSecs + " seconds ( " + timeToLiveSecs/60 + " minutes) and formatted as yyyy-MM-dd HH:mm:ss");
+				"Last updated must be within the last " + timeToLiveSecs + " seconds (" + timeToLiveSecs/60 + " minutes) and formatted as yyyy-MM-dd HH:mm:ss");
     	
         return false;
     }
@@ -149,7 +149,7 @@ public class CapacityInformationValidator implements ConstraintValidator<Capacit
     	}
     	else
     	{
-    		if(ci.getWaitingTimeMins() > 1400)
+    		if(ci.getWaitingTimeMins() != null && ci.getWaitingTimeMins() > 1400)
     		{
     			this.addValidationError(constraintValidatorContext,
         				ci.getServiceId(),

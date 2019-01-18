@@ -2,36 +2,106 @@ package com.nhsd.a2si.capacityinformation.domain;
 
 import org.junit.*;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import java.text.SimpleDateFormat;
+import com.nhsd.a2si.capacityinformation.CapacityInformationValidator;
+import com.nhsd.a2si.validation.code.CapacityIndicatorValidationCode;
+
+import javax.validation.ClockProvider;
+import javax.validation.ConstraintValidatorContext;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import static com.nhsd.a2si.capacityinformation.domain.CapacityInformation.STRING_DATE_FORMAT;
 import static junit.framework.TestCase.*;
-import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CapacityInformationTest {
+    
+	private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	
+	private CapacityInformation capacityInformation = new CapacityInformation();
+	private CapacityInformationValidator validator = new CapacityInformationValidator();
+	
+	private List<String> validationErrors = new ArrayList<>();
+    
+    private ConstraintValidatorContext cContext = new ConstraintValidatorContext() 
+    { 
+        public ConstraintViolationBuilder buildConstraintViolationWithTemplate(String msgTemplate) 
+        { 
+            return new ConstraintViolationBuilder() 
+            { 
 
-    private static ValidatorFactory factory;
-    private static Validator validator;
+                public ConstraintValidatorContext addConstraintViolation() 
+                { 
+                	validationErrors.add(msgTemplate);
+                    return null;
+                }
 
-    @BeforeClass
-    public static void beforeClass() {
-        factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
+				@Override
+				public NodeBuilderCustomizableContext addPropertyNode(String name) {
+					return null;
+				}
+
+				@Override
+				public LeafNodeBuilderCustomizableContext addBeanNode() {
+					return null;
+				}
+
+				@Override
+				public ContainerElementNodeBuilderCustomizableContext addContainerElementNode(String name,
+						Class<?> containerType, Integer typeArgumentIndex) {
+					return null;
+				}
+
+				@Override
+				public NodeBuilderDefinedContext addParameterNode(int index) {
+					return null;
+				}
+
+				@Override
+				public NodeBuilderDefinedContext addNode(String name) {
+					return null;
+				} 
+            }; 
+        }
+
+		@Override
+		public ClockProvider getClockProvider() {
+			return null;
+		}
+
+		@Override
+		public <T> T unwrap(Class<T> type) {
+			return null;
+		}
+
+		@Override
+		public void disableDefaultConstraintViolation() {
+			
+		}
+
+		@Override
+		public String getDefaultConstraintMessageTemplate() {
+			return null;
+		} 
+    };
+    
+    @Before
+    public void before()
+    {	
+    	// Initialise capacity information with default values
+    	this.capacityInformation.setServiceId("Service_1");
+    	this.capacityInformation.setServiceName("Service Name 1");
+    	this.capacityInformation.setWaitingTimeMins(20);
+    	this.capacityInformation.setNumberOfPeopleWaiting(10);
+        this.capacityInformation.setLastUpdated(this.dateTimeFormatter.format(LocalDateTime.now()));
     }
-
-    @AfterClass
-    public static void afterClass(){
-        factory.close();
+    
+    @After
+    public void after()
+    {
+    	// Empty validation error list
+    	validationErrors.clear();
     }
 
     @Test
@@ -113,119 +183,208 @@ public class CapacityInformationTest {
 
     @Test
     public void valiateThat_serviceIdentifierIsMandatory_null() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "serviceId", null);
-        assertEquals(1, violations.size());
-        assertEquals("Service identifier is mandatory", violations.iterator().next().getMessage());
+    	
+    	this.capacityInformation.setServiceId(null);
+ 
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+        assertEquals(1, this.validationErrors.size());
+        assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0001.getValidationCode()));
+        assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0001.getValidationMessage()));
     }
 
     @Test
     public void valiateThat_serviceIdentifierIsMandatory_EmptyString() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "serviceId", "");
-        assertEquals(1, violations.size());
-        assertThat(violations.iterator().next().getMessage(), endsWith("is mandatory"));
+    	
+    	this.capacityInformation.setServiceId("");
+    	 
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+        assertEquals(1, this.validationErrors.size());
+        assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0001.getValidationCode()));
+        assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0001.getValidationMessage()));
+    }
+    
+    @Test
+    public void valiateThat_serviceNameIsMandatory_EmptyString() {
+    	
+    	this.capacityInformation.setServiceName("");
+    	 
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+        assertEquals(1, this.validationErrors.size());
+        assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0002.getValidationCode()));
+        assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0002.getValidationMessage()));
+    }
+    
+    @Test
+    public void valiateThat_serviceNameIsMandatory_null() {
+    	
+    	this.capacityInformation.setServiceName(null);
+ 
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+        assertEquals(1, this.validationErrors.size());
+        assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0002.getValidationCode()));
+        assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0002.getValidationMessage()));
     }
 
     @Test
-    public void valiateThat_serviceIdentifierIsMandatory_Given() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "serviceId", "123");
-        assertEquals(0, violations.size());
+    public void validCapacityInformationRecord() {
+    	 
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+        assertEquals(0, this.validationErrors.size());
+        
     }
 
     @Test
     public void valiateThat_waitingTimeMins_null() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", null);
-        assertEquals(0, violations.size());
+    	
+    	this.capacityInformation.setWaitingTimeMins(null);
+    	 
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+        assertEquals(0, this.validationErrors.size());
     }
 
     @Test
     public void valiateThat_waitingTimeMins_NegativeNumber() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", -1);
-        assertEquals(1, violations.size());
-        assertThat(violations.iterator().next().getMessage(), endsWith("The value can be blank or positive"));
+    	
+    	this.capacityInformation.setWaitingTimeMins(-4);
+    	 
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+        assertEquals(1, this.validationErrors.size());
+        assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0004.getValidationCode()));
+        assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0004.getValidationMessage()));
     }
 
     @Test
-    public void valiateThat_waitingTimeMins_NegativeNumber_Zero() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", 0);
-        assertEquals(0, violations.size());
+    public void valiateThat_waitingTimeMins_Zero() {
+    	this.capacityInformation.setWaitingTimeMins(0);
+   	 
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+        assertEquals(0, this.validationErrors.size());
     }
-
-    @Test
-    public void valiateThat_waitingTimeMins_NegativeNumber_Positive() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", 1);
-        assertEquals(0, violations.size());
-    }
-
-
 
     @Test
     public void valiateThat_waitingTimeMins_mustBeLessThan24Hours_over() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", 1441);
-        assertEquals(1, violations.size());
-        assertThat(violations.iterator().next().getMessage(), endsWith("24 hours"));
+	    
+    	this.capacityInformation.setWaitingTimeMins(60*25);
+		 
+		this.validator.isValid(this.capacityInformation, this.cContext);
+		
+	    assertEquals(1, this.validationErrors.size());
+	    assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0005.getValidationCode()));
+	    assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0005.getValidationMessage()));
     }
 
     @Test
-    public void valiateThat_waitingTimeMins_mustBeLessThan24Hours_24hours() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "waitingTimeMins", 1440);
-        assertEquals(0, violations.size());
+    public void valiateThat_numberOfPeopleWaiting_mustBeBlankOrPositive_blank() {
+    	
+    	this.capacityInformation.setNumberOfPeopleWaiting(null);
+   	 
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+        assertEquals(0, this.validationErrors.size());
     }
 
     @Test
-    public void valiateThat_numberOfPeopleWaiting_mustBeBlankOrPisitive_blank() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "numberOfPeopleWaiting", null);
-        assertEquals(0, violations.size());
-    }
-
-    @Test
-    public void valiateThat_numberOfPeopleWaiting_mustBeBlankOrPisitive_zero() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "numberOfPeopleWaiting", 0);
-        assertEquals(0, violations.size());
-    }
-
-    @Test
-    public void valiateThat_numberOfPeopleWaiting_mustBeBlankOrPisitive_positive() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "numberOfPeopleWaiting", 1);
-        assertEquals(0, violations.size());
+    public void valiateThat_numberOfPeopleWaiting_mustBeBlankOrPositive_zero() {
+        
+    	this.capacityInformation.setNumberOfPeopleWaiting(0);
+      	 
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+        assertEquals(0, this.validationErrors.size());
     }
 
     @Test
     public void valiateThat_numberOfPeopleWaiting_mustBeBlankOrPisitive_negative() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "numberOfPeopleWaiting", -1);
-        assertEquals(1, violations.size());
-        assertEquals("The value can be blank or positive", violations.iterator().next().getMessage());
+        
+    	this.capacityInformation.setNumberOfPeopleWaiting(-10);
+		 
+		this.validator.isValid(this.capacityInformation, this.cContext);
+		
+	    assertEquals(1, this.validationErrors.size());
+	    assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0006.getValidationCode()));
+	    assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0006.getValidationMessage()));
     }
 
-    @Ignore
     @Test
     public void valiateThat_lastUpdated_lastUpdated_null() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "lastUpdated", null);
-        assertEquals(0, violations.size());
+    	
+    	this.capacityInformation.setLastUpdated(null);
+		 
+		this.validator.isValid(this.capacityInformation, this.cContext);
+		
+	    assertEquals(1, this.validationErrors.size());
+	    assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0003.getValidationCode()));
+	    assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0003.getValidationMessage()));
     }
-
 
     @Test
-    public void valiateThat_lastUpdated_lastUpdated_now() {
-            Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "lastUpdated", new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date().getTime()));
-            assertEquals(0, violations.size());
+    public void valiateThat_lastUpdated_over30Minutes() {
+    	
+    	this.capacityInformation.setLastUpdated(timeOverThirtyMinsOld());
+		 
+		this.validator.isValid(this.capacityInformation, this.cContext);
+		
+	    assertEquals(1, this.validationErrors.size());
+	    assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0003.getValidationCode()));
+	    assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0003.getValidationMessage()));
     }
 
     @Test
-    public void valiateThat_lastUpdated_within30Minutes() {
-        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "lastUpdated", new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date().getTime()  - 1_798_200));
-        assertEquals(0, violations.size());
+    public void valiateThat_lastUpdated_inTheFuture() {
+    	
+    	this.capacityInformation.setLastUpdated(timeInTheFuture());
+		 
+		this.validator.isValid(this.capacityInformation, this.cContext);
+		
+	    assertEquals(1, this.validationErrors.size());
+	    assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0003.getValidationCode()));
+	    assertTrue(validationErrors.get(0).contains(CapacityIndicatorValidationCode.VAL0003.getValidationMessage()));
     }
-
-//    @Test
-//    public void valiateThat_lastUpdated_over30Minutes() {
-//        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "lastUpdated", new SimpleDateFormat(STRING_DATE_FORMAT).format(new Date().getTime()  - 1_800_600));
-//        assertEquals(1, violations.size());
-//    }
-
-//    @Test
-//    public void valiateThat_lastUpdated_inTheFuture() {
-//        Set<ConstraintViolation<CapacityInformation>> violations = validator.validateValue(CapacityInformation.class, "lastUpdated", new SimpleDateFormat(STRING_DATE_FORMAT).format(6000 + new Date().getTime()));
-//        assertEquals(1, violations.size());
-//    }
+    
+    @Test
+    public void validateMultipleErrorsRaised() {
+    	
+    	this.capacityInformation.setLastUpdated(timeInTheFuture());
+    	this.capacityInformation.setServiceName(null);
+    	this.capacityInformation.setWaitingTimeMins(-34);
+    	this.capacityInformation.setNumberOfPeopleWaiting(-9);
+    	
+    	this.validator.isValid(this.capacityInformation, this.cContext);
+    	
+    	assertEquals(4, this.validationErrors.size());
+    	
+    	String errors = new String();
+    	for (String validationError : validationErrors)
+    	{
+    		errors = errors.concat(validationError);
+    	}
+    	
+	    assertTrue(errors.contains(CapacityIndicatorValidationCode.VAL0002.getValidationCode()));
+	    assertTrue(errors.contains(CapacityIndicatorValidationCode.VAL0002.getValidationMessage()));
+	    assertTrue(errors.contains(CapacityIndicatorValidationCode.VAL0003.getValidationCode()));
+	    assertTrue(errors.contains(CapacityIndicatorValidationCode.VAL0003.getValidationMessage()));
+	    assertTrue(errors.contains(CapacityIndicatorValidationCode.VAL0004.getValidationCode()));
+	    assertTrue(errors.contains(CapacityIndicatorValidationCode.VAL0004.getValidationMessage()));
+	    assertTrue(errors.contains(CapacityIndicatorValidationCode.VAL0006.getValidationCode()));
+	    assertTrue(errors.contains(CapacityIndicatorValidationCode.VAL0006.getValidationMessage()));
+    }
+    
+    private String timeOverThirtyMinsOld()
+    {
+    	return this.dateTimeFormatter.format(LocalDateTime.now().minusMinutes(31));
+    }
+    
+    private String timeInTheFuture()
+    {
+    	return this.dateTimeFormatter.format(LocalDateTime.now().plusMinutes(2));
+    }
 
 }
