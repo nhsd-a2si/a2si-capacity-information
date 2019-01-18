@@ -18,13 +18,7 @@ pipeline {
             }
         }
 
-        stage('Clean') {
-            steps {
-                sh "mvn clean install"
-            }
-        }
-
-        stage('Compile') {
+        stage('Build') {
             steps {
                 sh "mvn clean install"
             }
