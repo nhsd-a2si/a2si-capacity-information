@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
---    tools {
---        gradle '3.3'
---    }
+//    tools {
+//        gradle '3.3'
+//    }
 
     options {
         timestamps()
