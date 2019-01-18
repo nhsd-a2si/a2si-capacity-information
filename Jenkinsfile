@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
---    tools {
---        gradle '3.3'
---    }
+    tools {
+        maven 'Maven 3.6.0'
+    }
 
     options {
         timestamps()
@@ -18,15 +18,11 @@ pipeline {
             }
         }
 
-        stage('Clean') {
+        stage('Build') {
             steps {
                 sh "mvn clean install"
             }
         }
+}
 
-        stage('Compile') {
-            steps {
-                sh "mvn clean install"
-            }
-        }
 }
