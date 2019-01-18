@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-//    tools {
-//        gradle '3.3'
-//    }
+    tools {
+        maven 'Maven 3.3.9'
+    }
 
     options {
         timestamps()
