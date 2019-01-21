@@ -27,12 +27,15 @@ pipeline {
 
         stage('Build Downstream Projects'){
             steps{
-                build job: 'a2si-dos-proxy/' + env.BRANCH_NAME,
+                build job: 'a2si-capacity-service-client/' + env.BRANCH_NAME,
+                propagate: true,
+                wait: false
+
+                build job: 'a2si-capacity-service/' + env.BRANCH_NAME,
                 propagate: true,
                 wait: false
             }
         }
-
 }
 
 }
