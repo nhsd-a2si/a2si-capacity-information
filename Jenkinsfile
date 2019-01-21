@@ -10,13 +10,12 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '3'))
     }
 
-    def scmVars
-
     stages {
 
         stage('Checkout') {
             steps {
-              scmVars = checkout scm
+              checkout scm
+              echo $branch
             }
         }
 
@@ -28,7 +27,7 @@ pipeline {
 
         stage('Build Downstream Projects'){
             steps{
-                build job: 'a2si-dos-proxy/scmVars.GIT_BRANCH',
+                build job: 'a2si-dos-proxy/$branch',
                 propagate: true,
                 wait: false
             }
