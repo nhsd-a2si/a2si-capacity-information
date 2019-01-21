@@ -24,9 +24,10 @@ pipeline {
             }
         }
 
-        stage('Build Downstream'){
+        stage('Build Downstream Projects'){
             steps{
                 build 'a2si-dos-proxy/master',
+                propagate: true,
                 wait: false
             }
         }
