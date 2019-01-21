@@ -23,6 +23,11 @@ pipeline {
                 sh "mvn clean install"
             }
         }
+
+        stage('Build Downstream'){
+            build 'a2si-dos-proxy'
+        }
+
 }
 
 }
