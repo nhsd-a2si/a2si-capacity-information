@@ -14,12 +14,8 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                step{
-                    checkout scm
-                }
-                step{
-                    def branchName = scmVars.GIT_BRANCH
-                }
+                checkout scm
+                def branchName = scmVars.GIT_BRANCH
             }
         }
 
