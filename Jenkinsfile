@@ -13,7 +13,8 @@ pipeline {
     stages {
 
         stage('Checkout') {
-            steps {
+            node {
+              echo 'Pulling...' + env.BRANCH_NAME
               checkout scm
             }
         }
@@ -26,7 +27,7 @@ pipeline {
 
         stage('Build Downstream Projects'){
             steps{
-                build job: 'a2si-dos-proxy/env.BRANCH_NAME,
+                build job: 'a2si-dos-proxy/$env.BRANCH_NAME,
                 propagate: true,
                 wait: false
             }
