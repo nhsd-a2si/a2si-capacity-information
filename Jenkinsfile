@@ -27,7 +27,7 @@ pipeline {
 
         stage('Build Downstream Projects'){
             steps{
-                build job: 'a2si-dos-proxy/$BRANCH_NAME',
+                build job: 'a2si-dos-proxy/$GIT_BRANCH',
                 propagate: true,
                 wait: false
             }
