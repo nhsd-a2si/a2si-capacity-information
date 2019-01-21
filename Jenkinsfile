@@ -15,7 +15,6 @@ pipeline {
         stage('Checkout') {
             steps {
               checkout scm
-              echo $branch
             }
         }
 
@@ -27,7 +26,7 @@ pipeline {
 
         stage('Build Downstream Projects'){
             steps{
-                build job: 'a2si-dos-proxy/$branch',
+                build job: 'a2si-dos-proxy/env.BRANCH_NAME,
                 propagate: true,
                 wait: false
             }
