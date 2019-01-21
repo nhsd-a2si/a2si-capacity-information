@@ -10,14 +10,16 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '3'))
     }
 
-    def branchName
-
     stages {
 
         stage('Checkout') {
             steps {
-                checkout scm
-                branchName = scmVars.GIT_BRANCH
+                step{
+                    checkout scm
+                }
+                step{
+                    def branchName = scmVars.GIT_BRANCH
+                }
             }
         }
 
