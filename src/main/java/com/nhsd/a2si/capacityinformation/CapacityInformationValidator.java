@@ -149,7 +149,7 @@ public class CapacityInformationValidator implements ConstraintValidator<Capacit
     	}
     	else
     	{
-    		if(ci.getWaitingTimeMins() != null && ci.getWaitingTimeMins() > 1400)
+    		if(ci.getWaitingTimeMins() != null && ci.getWaitingTimeMins() > 1440)
     		{
     			this.addValidationError(constraintValidatorContext,
         				ci.getServiceId(),
