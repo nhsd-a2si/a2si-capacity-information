@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.6.0'
+        maven '3.6.0'
     }
 
     options {
@@ -12,16 +12,46 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
+        stage('Checkout project') {
             steps {
               echo 'Pulling...' + env.BRANCH_NAME
               checkout scm
             }
         }
 
-        stage('Build') {
+        stage('Clean project') {
             steps {
-                sh "mvn clean install"
+                sh "mvn clean"
+            }
+        }
+
+        stage('Validate project') {
+            steps {
+                sh "mvn validate"
+            }
+        }
+
+        stage('Compile project') {
+            steps {
+                sh "mvn compile"
+            }
+        }
+
+        stage('Build project') {
+            steps {
+                sh "mvn build"
+            }
+        }
+
+        stage('Run unit tests') {
+            steps {
+                sh "mvn test"
+            }
+        }
+
+        stage('Install project') {
+            steps {
+                sh "mvn install -DskipTests=true"
             }
         }
 
@@ -36,6 +66,5 @@ pipeline {
                 wait: false
             }
         }
-}
-
+    }
 }
