@@ -31,15 +31,9 @@ pipeline {
             }
         }
 
-        stage('Compile project') {
+        stage('Compile and build project') {
             steps {
                 sh "mvn compile"
-            }
-        }
-
-        stage('Build project') {
-            steps {
-                sh "mvn build"
             }
         }
 
